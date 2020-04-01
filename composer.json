@@ -1,0 +1,21 @@
+{
+    "name": "balsama/coronadatascraperclient",
+    "description": "Client for the coronadatascraper.com dataset.",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "league/csv": "^9.6",
+        "php": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Balsama\\": "src"
+        }
+    }
+}
