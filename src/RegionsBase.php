@@ -63,9 +63,11 @@ class RegionsBase
                 continue;
             }
             $population = $rawRegion->population;
-            $datesCount = $this->isolateCasesDates($rawRegion);
-            ksort($datesCount);
-            $regions[$name] = new Region($name, $type, $country, $population, $datesCount);
+            $cases = $this->isolateDates($rawRegion, 'cases');
+            ksort($cases);
+            $deaths = $this->isolateDates($rawRegion, 'deaths');
+            ksort($deaths);
+            $regions[$name] = new Region($name, $type, $country, $population, $cases, $deaths);
         }
         $this->regions = $regions;
     }
@@ -92,18 +94,24 @@ class RegionsBase
         return 'unknown';
     }
 
-    protected function isolateCasesDates($region) {
+    /**
+     * @param $region
+     * @param string $type
+     *   One of "cases", "deaths", or "recovered".
+     * @return mixed
+     */
+    protected function isolateDates($region, $type) {
         foreach ($region->dates as $date => $numbers) {
-            if (!property_exists($numbers, 'cases')) {
+            if (!property_exists($numbers, $type)) {
                 $cases = 0;
             }
             else {
-                $cases = $numbers->cases;
+                $cases = $numbers->$type;
             }
             $timestamp = strtotime($date);
-            $casesDate[$timestamp] = $cases;
+            $dates[$timestamp] = $cases;
         }
-        return $casesDate;
+        return $dates;
     }
 
 }

@@ -10,11 +10,11 @@ class RegionTest extends TestCase
     /* @var $region \Balsama\Region */
     private Region $region;
 
-    private $regionName = 'Caerbannog';
-    private $type = 'state';
-    private $country = 'Antioch';
-    private $population = 100000;
-    private $datesCount = [
+    private string $regionName = 'Caerbannog';
+    private string $type = 'state';
+    private string $country = 'Antioch';
+    private int $population = 100000;
+    private array $cases = [
         '315532800' => 0,
         '315619200' => 0,
         '315705600' => 1,
@@ -22,9 +22,16 @@ class RegionTest extends TestCase
         '315805600' => 100,
         '315892000' => 90000,
     ];
+    private array $deaths = [
+        '315532800' => 0,
+        '315619200' => 0,
+        '315705600' => 0,
+        '315792000' => 1,
+        '315805600' => 10,
+        '315892000' => 90,
+    ];
 
-    public function setUp(): void
-    {
+    public function setUp(): void {
         $this->createMockRegion();
         parent::setUp();
     }
@@ -34,13 +41,18 @@ class RegionTest extends TestCase
         $this->assertEquals($this->regionName, $name);
     }
 
-    public function testGetCounts() {
-        $datesCount = $this->region->getCounts();
-        $this->assertEquals($this->datesCount, $datesCount);
+    public function testGetCases() {
+        $cases = $this->region->getCases();
+        $this->assertEquals($this->cases, $cases);
+    }
+
+    public function testGetDeaths() {
+        $deaths = $this->region->getDeaths();
+        $this->assertEquals($this->deaths, $deaths);
     }
 
     public function testGetPercentages() {
-        $datesPercentage = $this->region->getPercentages();
+        $casesPercentages = $this->region->getPercentages();
         $this->assertEquals(
             [
                 '315532800' => 0.0000, // 0 / 100,000 * 100
@@ -50,7 +62,21 @@ class RegionTest extends TestCase
                 '315805600' => 0.1000, // 100 / 100,000 * 100
                 '315892000' => 90.0000, // 90,000 / 100,000 * 100
             ],
-            $datesPercentage);
+            $casesPercentages);
+    }
+
+    public function testGetPercentagesDeaths() {
+        $deathsPercentages = $this->region->getPercentages('deaths');
+        $this->assertEquals(
+            [
+                '315532800' => 0.0000, // 0 / 100,000 * 100
+                '315619200' => 0.0000, // 0 / 100,000 * 100
+                '315705600' => 0.0000, // 0 / 100,000 * 100
+                '315792000' => 0.0010, // 1 / 100,000 * 100
+                '315805600' => 0.0100, // 10 / 100,000 * 100
+                '315892000' => 0.0900, // 90 / 100,000 * 100
+            ],
+            $deathsPercentages);
     }
 
     public function testGetPer100kAboveN() {
@@ -65,11 +91,11 @@ class RegionTest extends TestCase
 
     public function testGetLatest() {
         $latest = $this->region->getLatestCount();
-        $this->assertEquals(end($this->datesCount), $latest);
+        $this->assertEquals(end($this->cases), $latest);
     }
 
     private function createMockRegion() {
-        $this->region = new Region($this->regionName, $this->type, $this->country, $this->population, $this->datesCount);
+        $this->region = new Region($this->regionName, $this->type, $this->country, $this->population, $this->cases, $this->deaths);
     }
 
 }

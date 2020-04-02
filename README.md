@@ -65,9 +65,13 @@ $spain->getLatestCount(); // The latest count of positive test results.
 
 // Sets of numbers:
 // An array of all available positive cases counts keyed by the timestamp of the day of the count.
-$spain->getCounts();
+$spain->getCases();
+// An array of all death count keyed by the timestamp of the day of the count.
+$spain->getDeaths();
 // An array of the percentage pf the population which has tested positive keyed by the day of the count.
 $spain->getPercentages();
+// `getPercentages()` takes an optional argument to get the same for deaths instead of cases.
+$spain->getPercentages('deaths');
 // An array of numbers representing the number of positive test cases per 100,000 people in the region. The $n argument
 // strips values less than $n. So if you want to see the trajectory of a region once it has reached 10 in 100,000 cases
 // you would pass `10` as $n. 
@@ -75,7 +79,7 @@ $spain->getPer100kAboveN(10);
 ``` 
 
 ### `Utilities`
-There is also a Utilies class that allows you to export information gathered to a CSV suitable for using with a
+There is also a Utilities class that allows you to export information gathered to a CSV suitable for using with a
 graphing tool. It's fairly limited now and specific to my use case.
 ```php
 $regionsBase = new Balsama\RegionsBase();

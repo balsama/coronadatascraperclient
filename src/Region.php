@@ -11,15 +11,25 @@ class Region
     protected string $type;
     protected string $country;
     protected int $population;
-    protected array $counts;
+    protected array $cases;
+    protected array $deaths;
 
-    public function __construct(string $name, string $type, string $country, int $population, array $datesCount) {
+    public function __construct(
+        string $name,
+        string $type,
+        string $country,
+        int $population,
+        array $cases,
+        array $deaths
+    ) {
         $this->name = $name;
         $this->type = $type;
         $this->country = $country;
         $this->population = $population;
-        $this->validateCounts($datesCount);
-        $this->counts = $datesCount;
+        $this->validateCounts($cases);
+        $this->cases = $cases;
+        $this->validateCounts($deaths);
+        $this->deaths = $deaths;
     }
 
     /**
@@ -34,17 +44,27 @@ class Region
      * @return int[]
      *   An array of positive tests counts keyed by the timestamp of the day.
      */
-    public function getCounts() {
-        return $this->counts;
+    public function getCases() {
+        return $this->cases;
     }
 
     /**
+     * @return int[]
+     *   An array of death counts keyed by the timestamp of the day.
+     */
+    public function getDeaths() {
+        return $this->deaths;
+    }
+
+    /**
+     * @param string $type
+     *   One of 'cases' or 'deaths'.
      * @return float[]
      *   An array of the percentages of the population that had tested positive keyed by the timestamp of the day.
      */
-    public function getPercentages() {
+    public function getPercentages($type = 'cases') {
         $percentages = [];
-        foreach ($this->counts as $timestamp => $count) {
+        foreach ($this->$type as $timestamp => $count) {
             $percentages[$timestamp] = number_format(
                 ($count / $this->population) * 100, 4, '.', ''
             );
@@ -61,7 +81,7 @@ class Region
      */
     public function getPer100kAboveN($n) {
         $per100kAboveN = [];
-        foreach ($this->counts as $timestamp => $count) {
+        foreach ($this->cases as $timestamp => $count) {
             $per100k = number_format(($count / $this->population) * 100000);
             if ($per100k > $n) {
                 $per100kAboveN[$timestamp] = $per100k;
@@ -83,7 +103,7 @@ class Region
      *   The most recent count for the region.
      */
     public function getLatestCount() {
-        return end($this->counts);
+        return end($this->cases);
     }
 
     /**
@@ -97,6 +117,9 @@ class Region
     private function validateCounts($counts) {
         if (!is_array($counts)) {
             throw new \InvalidArgumentException('$counts must be an array.');
+        }
+        if (count($counts) == 1) {
+            return;
         }
         foreach ($counts as $timestamp => $dateCount) {
             if (!$this->isTimestamp($timestamp)) {
