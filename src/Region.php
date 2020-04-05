@@ -66,10 +66,18 @@ class Region
         $percentages = [];
         foreach ($this->$type as $timestamp => $count) {
             $percentages[$timestamp] = number_format(
-                ($count / $this->population) * 100, 4, '.', ''
+                ($count / $this->population) * 100, 10, '.', ''
             );
         }
         return $percentages;
+    }
+
+    /**
+     * @return int
+     *   The population of the region.
+     */
+    public function getPopulation() {
+        return $this->population;
     }
 
     /**
