@@ -61,7 +61,12 @@ $spain = $regionsBase->getRegion('ESP');
 $spain->getName(); // The name of the region.
 $spain->getType(); // The type, either country, state, county, or city.
 $spain->getCountry(); // The country to which the region belongs.
-$spain->getLatestCount(); // The latest count of positive test results.
+$spain->getLatestCount(); // The latest count of cumulative positive test results.
+$spain->getLatestDeaths(); // The latest count of cumulative deaths.
+
+// US Counties have a FIPS number.
+$lafayetteParishLa = $regionsBase->getRegion('Lafayette Parish/ LA/ USA');
+$lafayetteParishLa->getFips(); // The FIPS code for the county.
 
 // Sets of numbers:
 // An array of all available positive cases counts keyed by the timestamp of the day of the count.

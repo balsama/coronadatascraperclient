@@ -126,6 +126,14 @@ class Region
     }
 
     /**
+     * @return integer
+     *   The most recent death count for the region.
+     */
+    public function getLatestDeaths() {
+        return end($this->deaths);
+    }
+
+    /**
      * @return string
      *   The country that that region is in, or the country that the region represents if the region is a country.
      */
