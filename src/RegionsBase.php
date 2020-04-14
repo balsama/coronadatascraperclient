@@ -67,7 +67,8 @@ class RegionsBase
             ksort($cases);
             $deaths = $this->isolateDates($rawRegion, 'deaths');
             ksort($deaths);
-            $regions[$name] = new Region($name, $type, $country, $population, $cases, $deaths);
+            $fips = $this->findFips($rawRegion);
+            $regions[$name] = new Region($name, $type, $country, $population, $cases, $deaths, $fips);
         }
         $this->regions = $regions;
     }
@@ -79,19 +80,7 @@ class RegionsBase
      * @return string
      */
     private function getTypeFromRegion($rawRegion, $name){
-        if (property_exists($rawRegion, 'city')) {
-            return 'city';
-        }
-        if (property_exists($rawRegion, 'county')) {
-            return 'county';
-        }
-        if (property_exists($rawRegion, 'state')) {
-            return 'state';
-        }
-        if (strlen($name) == 3) {
-            return 'country';
-        }
-        return 'unknown';
+        return $rawRegion->level;
     }
 
     /**
@@ -112,6 +101,20 @@ class RegionsBase
             $dates[$timestamp] = $cases;
         }
         return $dates;
+    }
+
+    /**
+     * Finds and returns a US county FIPS code if it exists in the raw region data.
+     * @param $rawRegion
+     * @return false|string
+     */
+    protected function findFips($rawRegion) {
+        if ($rawRegion->level == 'county') {
+            if (strpos($rawRegion->countyId, 'fips:') === 0) {
+                return substr($rawRegion->countyId, 5);
+            }
+        }
+        return '';
     }
 
 }

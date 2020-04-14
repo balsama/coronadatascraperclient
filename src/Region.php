@@ -13,6 +13,7 @@ class Region
     protected int $population;
     protected array $cases;
     protected array $deaths;
+    protected string $fips;
 
     public function __construct(
         string $name,
@@ -20,7 +21,8 @@ class Region
         string $country,
         int $population,
         array $cases,
-        array $deaths
+        array $deaths,
+        string $fips = ''
     ) {
         $this->name = $name;
         $this->type = $type;
@@ -30,6 +32,7 @@ class Region
         $this->cases = $cases;
         $this->validateCounts($deaths);
         $this->deaths = $deaths;
+        $this->fips = $fips;
     }
 
     /**
@@ -54,6 +57,14 @@ class Region
      */
     public function getDeaths() {
         return $this->deaths;
+    }
+
+    /**
+     * @return string
+     *   The FIPS code for the region if available.
+     */
+    public function getFips() {
+        return $this->fips;
     }
 
     /**
