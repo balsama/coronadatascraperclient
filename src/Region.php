@@ -39,7 +39,8 @@ class Region
      * @return string
      *   The name of the Region (city, county, state, or country).
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -47,7 +48,8 @@ class Region
      * @return int[]
      *   An array of positive tests counts keyed by the timestamp of the day.
      */
-    public function getCases() {
+    public function getCases()
+    {
         return $this->cases;
     }
 
@@ -55,7 +57,8 @@ class Region
      * @return int[]
      *   An array of death counts keyed by the timestamp of the day.
      */
-    public function getDeaths() {
+    public function getDeaths()
+    {
         return $this->deaths;
     }
 
@@ -63,21 +66,26 @@ class Region
      * @return string
      *   The FIPS code for the region if available.
      */
-    public function getFips() {
+    public function getFips()
+    {
         return $this->fips;
     }
 
     /**
-     * @param string $type
+     * @param  string $type
      *   One of 'cases' or 'deaths'.
      * @return float[]
      *   An array of the percentages of the population that had tested positive keyed by the timestamp of the day.
      */
-    public function getPercentages($type = 'cases') {
+    public function getPercentages($type = 'cases')
+    {
         $percentages = [];
         foreach ($this->$type as $timestamp => $count) {
             $percentages[$timestamp] = number_format(
-                ($count / $this->population) * 100, 10, '.', ''
+                ($count / $this->population) * 100,
+                10,
+                '.',
+                ''
             );
         }
         return $percentages;
@@ -87,18 +95,20 @@ class Region
      * @return int
      *   The population of the region.
      */
-    public function getPopulation() {
+    public function getPopulation()
+    {
         return $this->population;
     }
 
     /**
-     * @param $n
+     * @param  $n
      *   The minimum number of people infected per 100k for a day to be returned.
      * @return float[]
      *   An array of the number of people infected per 100k of the populations above `$n` per day keyed by the timestamp
      *   of the day.
      */
-    public function getPer100kAboveN($n) {
+    public function getPer100kAboveN($n)
+    {
         $per100kAboveN = [];
         foreach ($this->cases as $timestamp => $count) {
             $per100k = number_format(($count / $this->population) * 100000);
@@ -113,7 +123,8 @@ class Region
      * @return string
      *   The type of the region (city, county, state, or country)
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -121,7 +132,8 @@ class Region
      * @return integer
      *   The most recent count for the region.
      */
-    public function getLatestCount() {
+    public function getLatestCount()
+    {
         return end($this->cases);
     }
 
@@ -129,11 +141,13 @@ class Region
      * @return string
      *   The country that that region is in, or the country that the region represents if the region is a country.
      */
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 
-    private function validateCounts($counts) {
+    private function validateCounts($counts)
+    {
         if (!is_array($counts)) {
             throw new \InvalidArgumentException('$counts must be an array.');
         }
@@ -151,16 +165,16 @@ class Region
     }
 
     /**
-     * @param string $string
+     * @param  string $string
      * @return bool
      */
-    private function isTimestamp($string) {
+    private function isTimestamp($string)
+    {
         try {
             new DateTime('@' . $string);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
     }
-
 }

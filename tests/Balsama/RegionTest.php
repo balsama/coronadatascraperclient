@@ -31,27 +31,32 @@ class RegionTest extends TestCase
         '315892000' => 90,
     ];
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->createMockRegion();
         parent::setUp();
     }
 
-    public function testGetName() {
+    public function testGetName()
+    {
         $name = $this->region->getName();
         $this->assertEquals($this->regionName, $name);
     }
 
-    public function testGetCases() {
+    public function testGetCases()
+    {
         $cases = $this->region->getCases();
         $this->assertEquals($this->cases, $cases);
     }
 
-    public function testGetDeaths() {
+    public function testGetDeaths()
+    {
         $deaths = $this->region->getDeaths();
         $this->assertEquals($this->deaths, $deaths);
     }
 
-    public function testGetPercentages() {
+    public function testGetPercentages()
+    {
         $casesPercentages = $this->region->getPercentages();
         $this->assertEquals(
             [
@@ -62,10 +67,12 @@ class RegionTest extends TestCase
                 '315805600' => 0.1000, // 100 / 100,000 * 100
                 '315892000' => 90.0000, // 90,000 / 100,000 * 100
             ],
-            $casesPercentages);
+            $casesPercentages
+        );
     }
 
-    public function testGetPercentagesDeaths() {
+    public function testGetPercentagesDeaths()
+    {
         $deathsPercentages = $this->region->getPercentages('deaths');
         $this->assertEquals(
             [
@@ -76,10 +83,12 @@ class RegionTest extends TestCase
                 '315805600' => 0.0100, // 10 / 100,000 * 100
                 '315892000' => 0.0900, // 90 / 100,000 * 100
             ],
-            $deathsPercentages);
+            $deathsPercentages
+        );
     }
 
-    public function testGetPer100kAboveN() {
+    public function testGetPer100kAboveN()
+    {
         $datesPer100kAbove0 = $this->region->getPer100kAboveN(0);
 
         $this->assertIsArray($datesPer100kAbove0);
@@ -89,13 +98,21 @@ class RegionTest extends TestCase
         $this->assertCount(3, $datesPer100kAbove9);
     }
 
-    public function testGetLatest() {
+    public function testGetLatest()
+    {
         $latest = $this->region->getLatestCount();
         $this->assertEquals(end($this->cases), $latest);
     }
 
-    private function createMockRegion() {
-        $this->region = new Region($this->regionName, $this->type, $this->country, $this->population, $this->cases, $this->deaths);
+    private function createMockRegion()
+    {
+        $this->region = new Region(
+            $this->regionName,
+            $this->type,
+            $this->country,
+            $this->population,
+            $this->cases,
+            $this->deaths,
+        );
     }
-
 }

@@ -14,13 +14,15 @@ class RegionsBaseTest extends TestCase
     /* @var $regions \Balsama\RegionsBase */
     private $regions;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->clientBase = new ClientBase();
         $this->regions = new RegionsBase();
         parent::setUp();
     }
 
-    public function testGetRegions() {
+    public function testGetRegions()
+    {
         $regions = $this->regions->getRegions();
 
         $this->assertIsArray($regions);
@@ -29,7 +31,8 @@ class RegionsBaseTest extends TestCase
         }
     }
 
-    public function testGetCountriesStates() {
+    public function testGetCountriesStates()
+    {
         $usStates = $this->regions->getCountrysStates('United States');
 
         $this->assertIsArray($usStates);
@@ -40,7 +43,8 @@ class RegionsBaseTest extends TestCase
         }
     }
 
-    public function testFindFips() {
+    public function testFindFips()
+    {
         $rawRegion = [
             'level' => 'county',
             'countyId' => 'fips:01234',
@@ -58,21 +62,22 @@ class RegionsBaseTest extends TestCase
 
     /**
      * Invokes an object's private method.
-     * @param $object
+     *
+     * @param  $object
      *   The object to instantiate.
-     * @param $methodName
+     * @param  $methodName
      *   The methos to invoke.
-     * @param array $parameters
+     * @param  array $parameters
      * @return mixed
      *   Param to pass to the method.
      * @throws \ReflectionException
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = []) {
+    public function invokeMethod(&$object, $methodName, array $parameters = [])
+    {
         $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
     }
-
 }
