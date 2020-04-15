@@ -141,7 +141,8 @@ class Region
      * @return integer
      *   The most recent death count for the region.
      */
-    public function getLatestDeaths() {
+    public function getLatestDeaths()
+    {
         return end($this->deaths);
     }
 
