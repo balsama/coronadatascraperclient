@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-include_once 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Balsama\RegionsBase;
 use Balsama\Utilities;

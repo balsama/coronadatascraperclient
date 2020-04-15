@@ -27,18 +27,21 @@ class ClientBase
     /**
      * @return mixed
      */
-    public function getAllRawData() {
+    public function getAllRawData()
+    {
         return $this->currentRawData;
     }
 
-    protected function fetchCurrentRawData($retryOnError = true) {
+    protected function fetchCurrentRawData($retryOnError = true)
+    {
         try {
-            /** @var $response ResponseInterface $response */
+            /**
+ * @var $response ResponseInterface $response
+*/
             $response = $this->client->get($this->apiUrl . $this->endpoint);
             $body = json_decode($response->getBody());
             return $body;
-        }
-        catch (ServerException $e) {
+        } catch (ServerException $e) {
             if ($retryOnError) {
                 return $this->getCurrentData();
             }
@@ -46,8 +49,8 @@ class ClientBase
         }
     }
 
-    protected function setupTools() {
+    protected function setupTools()
+    {
         $this->client = new Client();
     }
-
 }

@@ -19,27 +19,32 @@ class RegionsBase
 
     /**
      * Get's all of the RegionsBase provided in timeseries-byLocation.json.
+     *
      * @return Region[]
      */
-    public function getRegions() {
+    public function getRegions()
+    {
         return $this->regions;
     }
 
     /**
-     * @param $regionName
+     * @param  $regionName
      * @return Region
      */
-    public function getRegion($regionName) {
+    public function getRegion($regionName)
+    {
         return $this->regions[$regionName];
     }
 
     /**
      * Get's all of a given country's state RegionsBase.
-     * @param $country string
-     *   The three-character region country code.
+     *
+     * @param  $country string
+     *                  The three-character region country code.
      * @return Region[]
      */
-    public function getCountrysStates($country) {
+    public function getCountrysStates($country)
+    {
         $countryStates = [];
         foreach ($this->regions as $region) {
             if (($country == $region->getCountry()) && ($region->getType() == 'state')) {
@@ -52,7 +57,8 @@ class RegionsBase
     /**
      * Creates a new Region object for each region provided in the timeseries-byLocation.json file.
      */
-    private function setRegions() {
+    private function setRegions()
+    {
         $regions = [];
         $rawRegions = $this->clientBase->getAllRawData();
         foreach ($rawRegions as $name => $rawRegion) {
@@ -74,27 +80,28 @@ class RegionsBase
     }
 
     /**
-     * @param $rawRegion
+     * @param  $rawRegion
      *   A raw regions object from the coronadatascrapter.com timeseries-byLocation.json file.
-     * @param $name
+     * @param  $name
      * @return string
      */
-    private function getTypeFromRegion($rawRegion, $name){
+    private function getTypeFromRegion($rawRegion, $name)
+    {
         return $rawRegion->level;
     }
 
     /**
-     * @param $region
-     * @param string $type
+     * @param  $region
+     * @param  string $type
      *   One of "cases", "deaths", or "recovered".
      * @return mixed
      */
-    protected function isolateDates($region, $type) {
+    protected function isolateDates($region, $type)
+    {
         foreach ($region->dates as $date => $numbers) {
             if (!property_exists($numbers, $type)) {
                 $cases = 0;
-            }
-            else {
+            } else {
                 $cases = $numbers->$type;
             }
             $timestamp = strtotime($date);
@@ -105,10 +112,12 @@ class RegionsBase
 
     /**
      * Finds and returns a US county FIPS code if it exists in the raw region data.
-     * @param $rawRegion
+     *
+     * @param  $rawRegion
      * @return false|string
      */
-    protected function findFips($rawRegion) {
+    protected function findFips($rawRegion)
+    {
         if ($rawRegion->level == 'county') {
             if (strpos($rawRegion->countyId, 'fips:') === 0) {
                 return substr($rawRegion->countyId, 5);
@@ -116,5 +125,4 @@ class RegionsBase
         }
         return '';
     }
-
 }

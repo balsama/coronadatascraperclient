@@ -8,7 +8,8 @@ use SplTempFileObject;
 class Utilities
 {
 
-    public static function writeCsvTableFromData($data, $filename = 'data', $resetKeys = true) {
+    public static function writeCsvTableFromData($data, $filename = 'data', $resetKeys = true)
+    {
         if (!$resetKeys) {
             throw new \Exception('CSVs that preserve keys is not yet implemented.');
         }
@@ -32,12 +33,12 @@ class Utilities
             $i++;
         }
 
-        $csv = Writer::createFromFileObject(new SplTempFileObject());;
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        ;
         $csv->insertOne($headers);
         $csv->insertAll($formatted);
 
         $output = $csv->getContent();
         file_put_contents("./csv/$filename.csv", $output);
     }
-
 }
