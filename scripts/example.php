@@ -41,5 +41,3 @@ foreach ($usStates as $stateName => $state) {
 }
 // writeCsvTableFromData() expects an multidimensional array keyed by region name, each containing an array of counts.
 Utilities::writeCsvTableFromData($per100k, 'per100k', true);
-
-$foo = 21;
