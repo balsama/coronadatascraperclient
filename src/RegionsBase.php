@@ -62,7 +62,8 @@ class RegionsBase
      *
      * @return array []region
      */
-    public function getAmbiguousRegions($nameFragment) {
+    public function getAmbiguousRegions($nameFragment)
+    {
         $possibleMatches = [];
         foreach ($this->regions as $regionName => $region) {
             /* @var $region region */
@@ -94,7 +95,16 @@ class RegionsBase
                 ksort($dataPoints[$point]);
             }
             $fips = $this->findFips($rawRegion);
-            $regions[$name] = new Region($name, $type, $country, $population, $dataPoints['cases'], $dataPoints['deaths'], $dataPoints['discharged'], $fips);
+            $regions[$name] = new Region(
+                $name,
+                $type,
+                $country,
+                $population,
+                $dataPoints['cases'],
+                $dataPoints['deaths'],
+                $dataPoints['discharged'],
+                $fips
+            );
         }
         $this->regions = $regions;
     }
