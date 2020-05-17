@@ -73,6 +73,8 @@ $lafayetteParishLa->getFips(); // The FIPS code for the county.
 $spain->getCases();
 // An array of all death count keyed by the timestamp of the day of the count.
 $spain->getDeaths();
+// An array of all discharged count data keyed by the timestamp of the day of the count.
+$spain->getDischarged();
 // An array of the percentage pf the population which has tested positive keyed by the day of the count.
 $spain->getPercentages();
 // `getPercentages()` takes an optional argument to get the same for deaths instead of cases.

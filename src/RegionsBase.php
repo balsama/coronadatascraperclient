@@ -2,6 +2,8 @@
 
 namespace Balsama;
 
+use function GuzzleHttp\Psr7\str;
+
 class RegionsBase
 {
 
@@ -55,6 +57,23 @@ class RegionsBase
     }
 
     /**
+     * @param string $nameFragment
+     *   Substring of a regions name
+     *
+     * @return array []region
+     */
+    public function getAmbiguousRegions($nameFragment) {
+        $possibleMatches = [];
+        foreach ($this->regions as $regionName => $region) {
+            /* @var $region region */
+            if (strpos(strtolower($regionName), strtolower($nameFragment)) !== false) {
+                $possibleMatches[$regionName] = $region;
+            }
+        }
+        return $possibleMatches;
+    }
+
+    /**
      * Creates a new Region object for each region provided in the timeseries-byLocation.json file.
      */
     private function setRegions()
@@ -69,12 +88,13 @@ class RegionsBase
                 continue;
             }
             $population = $rawRegion->population;
-            $cases = $this->isolateDates($rawRegion, 'cases');
-            ksort($cases);
-            $deaths = $this->isolateDates($rawRegion, 'deaths');
-            ksort($deaths);
+            $points = ['cases', 'deaths', 'discharged'];
+            foreach ($points as $point) {
+                $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
+                ksort($dataPoints[$point]);
+            }
             $fips = $this->findFips($rawRegion);
-            $regions[$name] = new Region($name, $type, $country, $population, $cases, $deaths, $fips);
+            $regions[$name] = new Region($name, $type, $country, $population, $dataPoints['cases'], $dataPoints['deaths'], $dataPoints['discharged'], $fips);
         }
         $this->regions = $regions;
     }
@@ -93,7 +113,7 @@ class RegionsBase
     /**
      * @param  $region
      * @param  string $type
-     *   One of "cases", "deaths", or "recovered".
+     *   One of "cases", "deaths", or "discharged".
      * @return mixed
      */
     protected function isolateDates($region, $type)

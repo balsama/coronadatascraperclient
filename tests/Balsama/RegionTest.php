@@ -30,6 +30,14 @@ class RegionTest extends TestCase
         '315805600' => 10,
         '315892000' => 90,
     ];
+    private array $recovered = [
+        '315532800' => 0,
+        '315619200' => 0,
+        '315705600' => 0,
+        '315792000' => 0,
+        '315805600' => 2,
+        '315892000' => 7,
+    ];
 
     public function setUp(): void
     {
@@ -53,6 +61,12 @@ class RegionTest extends TestCase
     {
         $deaths = $this->region->getDeaths();
         $this->assertEquals($this->deaths, $deaths);
+    }
+
+    public function testGetRecovered()
+    {
+        $recovered = $this->region->getDischarged();
+        $this->assertEquals($this->recovered, $recovered);
     }
 
     public function testGetPercentages()
@@ -113,6 +127,7 @@ class RegionTest extends TestCase
             $this->population,
             $this->cases,
             $this->deaths,
+            $this->recovered,
         );
     }
 }

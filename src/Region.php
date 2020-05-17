@@ -13,6 +13,7 @@ class Region
     protected int $population;
     protected array $cases;
     protected array $deaths;
+    protected array $discharged;
     protected string $fips;
 
     public function __construct(
@@ -22,6 +23,7 @@ class Region
         int $population,
         array $cases,
         array $deaths,
+        array $discharged,
         string $fips = ''
     ) {
         $this->name = $name;
@@ -32,6 +34,8 @@ class Region
         $this->cases = $cases;
         $this->validateCounts($deaths);
         $this->deaths = $deaths;
+        $this->validateCounts($discharged);
+        $this->discharged = $discharged;
         $this->fips = $fips;
     }
 
@@ -60,6 +64,15 @@ class Region
     public function getDeaths()
     {
         return $this->deaths;
+    }
+
+    /**
+     * @return int[]
+     *   An array of Discharged counts keyed by the timestamp of the day.
+     */
+    public function getDischarged()
+    {
+        return $this->discharged;
     }
 
     /**
