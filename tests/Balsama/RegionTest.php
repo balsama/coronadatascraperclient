@@ -53,13 +53,13 @@ class RegionTest extends TestCase
 
     public function testGetCases()
     {
-        $cases = $this->region->getCases();
+        $cases = $this->region->getCumulativeCases();
         $this->assertEquals($this->cases, $cases);
     }
 
     public function testGetDeaths()
     {
-        $deaths = $this->region->getDeaths();
+        $deaths = $this->region->getCumalitiveDeaths();
         $this->assertEquals($this->deaths, $deaths);
     }
 
