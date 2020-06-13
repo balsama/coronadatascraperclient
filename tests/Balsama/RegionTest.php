@@ -14,7 +14,7 @@ class RegionTest extends TestCase
     private string $type = 'state';
     private string $country = 'Antioch';
     private int $population = 100000;
-    private array $cumulativeCases = [
+    private array $cases = [
         '315532800' => 0,
         '315619200' => 0,
         '315705600' => 1,
@@ -22,7 +22,7 @@ class RegionTest extends TestCase
         '315805600' => 100,
         '315892000' => 90000,
     ];
-    private array $cumalitiveDeaths = [
+    private array $deaths = [
         '315532800' => 0,
         '315619200' => 0,
         '315705600' => 0,
@@ -37,11 +37,6 @@ class RegionTest extends TestCase
         '315792000' => 0,
         '315805600' => 2,
         '315892000' => 7,
-    ];
-    private array $dayCases = [
-        '315792000' => 1,
-        '315805600' => 9,
-        '315892000' => 998,
     ];
 
     public function setUp(): void
@@ -58,14 +53,14 @@ class RegionTest extends TestCase
 
     public function testGetCases()
     {
-        $cases = $this->region->getCumulativeCases();
-        $this->assertEquals($this->cumulativeCases, $cases);
+        $cases = $this->region->getCases();
+        $this->assertEquals($this->cases, $cases);
     }
 
     public function testGetDeaths()
     {
-        $deaths = $this->region->getCumulativeDeaths();
-        $this->assertEquals($this->cumalitiveDeaths, $deaths);
+        $deaths = $this->region->getDeaths();
+        $this->assertEquals($this->deaths, $deaths);
     }
 
     public function testGetRecovered()
@@ -92,7 +87,7 @@ class RegionTest extends TestCase
 
     public function testGetPercentagesDeaths()
     {
-        $deathsPercentages = $this->region->getPercentages('cumulativeDeaths');
+        $deathsPercentages = $this->region->getPercentages('deaths');
         $this->assertEquals(
             [
                 '315532800' => 0.0000, // 0 / 100,000 * 100
@@ -120,13 +115,7 @@ class RegionTest extends TestCase
     public function testGetLatest()
     {
         $latest = $this->region->getLatestCount();
-        $this->assertEquals(end($this->cumulativeCases), $latest);
-    }
-
-    public function testGetDayCases()
-    {
-        $dayCases = $this->region->getDayCases();
-        $this->assertEquals($this->dayCases, $dayCases);
+        $this->assertEquals(end($this->cases), $latest);
     }
 
     private function createMockRegion()
@@ -136,10 +125,9 @@ class RegionTest extends TestCase
             $this->type,
             $this->country,
             $this->population,
-            $this->cumulativeCases,
-            $this->cumalitiveDeaths,
+            $this->cases,
+            $this->deaths,
             $this->recovered,
-            $this->dayCases,
         );
     }
 }

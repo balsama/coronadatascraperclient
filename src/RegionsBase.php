@@ -89,42 +89,24 @@ class RegionsBase
                 continue;
             }
             $population = $rawRegion->population;
-            $points = ['cumalitiveCases', 'cumalitiveDeaths', 'discharged'];
+            $points = ['cases', 'deaths', 'discharged'];
             foreach ($points as $point) {
                 $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
                 ksort($dataPoints[$point]);
             }
-            $dataPoints['dayCases'] = $this->extractCasesByDay($rawRegion);
             $fips = $this->findFips($rawRegion);
             $regions[$name] = new Region(
                 $name,
                 $type,
                 $country,
                 $population,
-                $dataPoints['cumalitiveCases'],
-                $dataPoints['cumalitiveDeaths'],
+                $dataPoints['cases'],
+                $dataPoints['deaths'],
                 $dataPoints['discharged'],
-                $dataPoints['dayCases'],
-                $fips,
+                $fips
             );
         }
         $this->regions = $regions;
-    }
-
-    private function extractCasesByDay($rawRegion)
-    {
-        $dayCases = [];
-        foreach ($rawRegion->dates as $date => $numbers) {
-            if (!property_exists($numbers, 'cases')) {
-                continue;
-            }
-            if (empty($previous)) {
-                $previous = $numbers->cases;
-            }
-            $dayCases[strtotime($date)] = ($numbers->cases - $previous);
-            $previous = $numbers->cases;
-        }
-        return $dayCases;
     }
 
     /**

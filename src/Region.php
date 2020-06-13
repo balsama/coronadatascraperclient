@@ -11,10 +11,9 @@ class Region
     protected string $type;
     protected string $country;
     protected int $population;
-    protected array $cumulativeCases;
-    protected array $cumulativeDeaths;
+    protected array $cases;
+    protected array $deaths;
     protected array $discharged;
-    protected array $dayCases;
     protected string $fips;
 
     public function __construct(
@@ -22,24 +21,21 @@ class Region
         string $type,
         string $country,
         int $population,
-        array $cumulativeCases,
-        array $cumulativeDeaths,
+        array $cases,
+        array $deaths,
         array $discharged,
-        array $dayCases,
         string $fips = ''
     ) {
         $this->name = $name;
         $this->type = $type;
         $this->country = $country;
         $this->population = $population;
-        $this->validateCounts($cumulativeCases);
-        $this->cumulativeCases = $cumulativeCases;
-        $this->validateCounts($cumulativeDeaths);
-        $this->cumulativeDeaths = $cumulativeDeaths;
+        $this->validateCounts($cases);
+        $this->cases = $cases;
+        $this->validateCounts($deaths);
+        $this->deaths = $deaths;
         $this->validateCounts($discharged);
         $this->discharged = $discharged;
-        $this->validateCounts($dayCases);
-        $this->dayCases = $dayCases;
         $this->fips = $fips;
     }
 
@@ -56,27 +52,18 @@ class Region
      * @return int[]
      *   An array of positive tests counts keyed by the timestamp of the day.
      */
-    public function getCumulativeCases()
+    public function getCases()
     {
-        return $this->cumulativeCases;
-    }
-
-    /**
-     * @return int[]
-     *   An array of new positive test counts each day keyed by the timestamp of the day.
-     */
-    public function getDayCases()
-    {
-        return $this->dayCases;
+        return $this->cases;
     }
 
     /**
      * @return int[]
      *   An array of death counts keyed by the timestamp of the day.
      */
-    public function getCumulativeDeaths()
+    public function getDeaths()
     {
-        return $this->cumulativeDeaths;
+        return $this->deaths;
     }
 
     /**
@@ -99,11 +86,11 @@ class Region
 
     /**
      * @param  string $type
-     *   One of 'cumulativeCases' or 'cumulativeDeaths'.
+     *   One of 'cases' or 'deaths'.
      * @return float[]
      *   An array of the percentages of the population that had tested positive keyed by the timestamp of the day.
      */
-    public function getPercentages($type = 'cumulativeCases')
+    public function getPercentages($type = 'cases')
     {
         $percentages = [];
         foreach ($this->$type as $timestamp => $count) {
@@ -136,7 +123,7 @@ class Region
     public function getPer100kAboveN($n)
     {
         $per100kAboveN = [];
-        foreach ($this->cumulativeCases as $timestamp => $count) {
+        foreach ($this->cases as $timestamp => $count) {
             $per100k = number_format(($count / $this->population) * 100000);
             if ($per100k > $n) {
                 $per100kAboveN[$timestamp] = $per100k;
@@ -160,7 +147,7 @@ class Region
      */
     public function getLatestCount()
     {
-        return end($this->cumulativeCases);
+        return end($this->cases);
     }
 
     /**
@@ -169,7 +156,7 @@ class Region
      */
     public function getLatestDeaths()
     {
-        return end($this->cumalitiveDeaths);
+        return end($this->deaths);
     }
 
     /**

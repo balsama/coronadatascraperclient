@@ -34,6 +34,7 @@ class Utilities
         }
 
         $csv = Writer::createFromFileObject(new SplTempFileObject());
+        ;
         $csv->insertOne($headers);
         $csv->insertAll($formatted);
 
