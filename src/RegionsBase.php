@@ -111,7 +111,8 @@ class RegionsBase
         $this->regions = $regions;
     }
 
-    private function extractCasesByDay($rawRegion) {
+    private function extractCasesByDay($rawRegion)
+    {
         $dayCases = [];
         foreach ($rawRegion->dates as $date => $numbers) {
             if (!property_exists($numbers, 'cases')) {
