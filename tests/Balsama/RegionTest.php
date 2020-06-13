@@ -64,7 +64,7 @@ class RegionTest extends TestCase
 
     public function testGetDeaths()
     {
-        $deaths = $this->region->getCumalitiveDeaths();
+        $deaths = $this->region->getCumulativeDeaths();
         $this->assertEquals($this->cumalitiveDeaths, $deaths);
     }
 
@@ -92,7 +92,7 @@ class RegionTest extends TestCase
 
     public function testGetPercentagesDeaths()
     {
-        $deathsPercentages = $this->region->getPercentages('deaths');
+        $deathsPercentages = $this->region->getPercentages('cumulativeDeaths');
         $this->assertEquals(
             [
                 '315532800' => 0.0000, // 0 / 100,000 * 100

@@ -12,7 +12,7 @@ class Region
     protected string $country;
     protected int $population;
     protected array $cumulativeCases;
-    protected array $cumalitiveDeaths;
+    protected array $cumulativeDeaths;
     protected array $discharged;
     protected array $dayCases;
     protected string $fips;
@@ -35,7 +35,7 @@ class Region
         $this->validateCounts($cumulativeCases);
         $this->cumulativeCases = $cumulativeCases;
         $this->validateCounts($cumulativeDeaths);
-        $this->cumalitiveDeaths = $cumulativeDeaths;
+        $this->cumulativeDeaths = $cumulativeDeaths;
         $this->validateCounts($discharged);
         $this->discharged = $discharged;
         $this->validateCounts($dayCases);
@@ -74,9 +74,9 @@ class Region
      * @return int[]
      *   An array of death counts keyed by the timestamp of the day.
      */
-    public function getCumalitiveDeaths()
+    public function getCumulativeDeaths()
     {
-        return $this->cumalitiveDeaths;
+        return $this->cumulativeDeaths;
     }
 
     /**
@@ -99,11 +99,11 @@ class Region
 
     /**
      * @param  string $type
-     *   One of 'cases' or 'deaths'.
+     *   One of 'cumulativeCases' or 'cumulativeDeaths'.
      * @return float[]
      *   An array of the percentages of the population that had tested positive keyed by the timestamp of the day.
      */
-    public function getPercentages($type = 'cases')
+    public function getPercentages($type = 'cumulativeCases')
     {
         $percentages = [];
         foreach ($this->$type as $timestamp => $count) {
