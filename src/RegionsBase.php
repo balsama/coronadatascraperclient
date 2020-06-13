@@ -94,6 +94,7 @@ class RegionsBase
                 $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
                 ksort($dataPoints[$point]);
             }
+            $dataPoints['new_cases'] = $this->extractNewCases($rawRegion);
             $fips = $this->findFips($rawRegion);
             $regions[$name] = new Region(
                 $name,
@@ -103,7 +104,8 @@ class RegionsBase
                 $dataPoints['cases'],
                 $dataPoints['deaths'],
                 $dataPoints['discharged'],
-                $fips
+                $dataPoints['new_cases'],
+                $fips,
             );
         }
         $this->regions = $regions;
@@ -138,6 +140,22 @@ class RegionsBase
             $dates[$timestamp] = $cases;
         }
         return $dates;
+    }
+
+    private function extractNewCases($rawRegion)
+    {
+        $dayCases = [];
+        foreach ($rawRegion->dates as $date => $numbers) {
+            if (!property_exists($numbers, 'cases')) {
+                continue;
+            }
+            if (empty($previous)) {
+                $previous = $numbers->cases;
+            }
+            $dayCases[strtotime($date)] = ($numbers->cases - $previous);
+            $previous = $numbers->cases;
+        }
+        return $dayCases;
     }
 
     /**

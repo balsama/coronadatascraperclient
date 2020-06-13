@@ -38,6 +38,11 @@ class RegionTest extends TestCase
         '315805600' => 2,
         '315892000' => 7,
     ];
+    private array $newCases = [
+        '315792000' => 1,
+        '315805600' => 9,
+        '315892000' => 998,
+    ];
 
     public function setUp(): void
     {
@@ -55,6 +60,7 @@ class RegionTest extends TestCase
     {
         $cases = $this->region->getCases();
         $this->assertEquals($this->cases, $cases);
+        $this->assertEquals($this->cases['315805600'], $cases['315805600']);
     }
 
     public function testGetDeaths()
@@ -101,6 +107,12 @@ class RegionTest extends TestCase
         );
     }
 
+    public function testGetNewCases()
+    {
+        $newCases = $this->region->getNewCases();
+        $this->assertEquals($this->newCases, $newCases);
+    }
+
     public function testGetPer100kAboveN()
     {
         $datesPer100kAbove0 = $this->region->getPer100kAboveN(0);
@@ -128,6 +140,7 @@ class RegionTest extends TestCase
             $this->cases,
             $this->deaths,
             $this->recovered,
+            $this->newCases,
         );
     }
 }
