@@ -89,7 +89,7 @@ class RegionsBase
                 continue;
             }
             $population = $rawRegion->population;
-            $points = ['cumalitiveCases', 'cumalitiveDeaths', 'discharged'];
+            $points = ['cumulativeCases', 'cumulativeDeaths', 'discharged'];
             foreach ($points as $point) {
                 $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
                 ksort($dataPoints[$point]);
@@ -101,8 +101,8 @@ class RegionsBase
                 $type,
                 $country,
                 $population,
-                $dataPoints['cumalitiveCases'],
-                $dataPoints['cumalitiveDeaths'],
+                $dataPoints['cumulativeCases'],
+                $dataPoints['cumulativeDeaths'],
                 $dataPoints['discharged'],
                 $dataPoints['dayCases'],
                 $fips,
