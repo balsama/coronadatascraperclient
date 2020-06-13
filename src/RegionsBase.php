@@ -112,10 +112,13 @@ class RegionsBase
     }
 
     private function extractCasesByDay($rawRegion) {
+        $dayCases = [];
         foreach ($rawRegion->dates as $date => $numbers) {
+            if (!property_exists($numbers, 'cases')) {
+                continue;
+            }
             if (empty($previous)) {
                 $previous = $numbers->cases;
-                continue;
             }
             $dayCases[strtotime($date)] = ($numbers->cases - $previous);
             $previous = $numbers->cases;
