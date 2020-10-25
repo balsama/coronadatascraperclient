@@ -137,7 +137,7 @@ class RegionsBase
                 $cases = $numbers->$type;
             }
             $timestamp = strtotime($date);
-            $dates[$timestamp] = (integer) $cases;
+            $dates[$timestamp] = (int) $cases;
         }
         return $dates;
     }
