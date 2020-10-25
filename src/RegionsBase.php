@@ -81,17 +81,17 @@ class RegionsBase
     {
         $regions = [];
         $rawRegions = $this->clientBase->getAllRawData();
-        foreach ($rawRegions as $name => $rawRegion) {
-            $name = str_replace(',', '/', $name);
+        foreach ($rawRegions as $rawRegion) {
+            $name = str_replace(',', '/', $rawRegion->name);
             $type = $this->getTypeFromRegion($rawRegion, $name);
-            $country = $rawRegion->country;
+            $country = $rawRegion->countryName;
             if (!property_exists($rawRegion, 'population')) {
                 continue;
             }
             $population = $rawRegion->population;
             $points = ['cases', 'deaths', 'discharged'];
             foreach ($points as $point) {
-                $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
+                $dataPoints[$point] = $this->isolateDates($rawRegion, (int) $point);
                 ksort($dataPoints[$point]);
             }
             $dataPoints['new_cases'] = $this->extractNewCases($rawRegion);
@@ -167,8 +167,10 @@ class RegionsBase
     protected function findFips($rawRegion)
     {
         if ($rawRegion->level == 'county') {
-            if (strpos($rawRegion->countyId, 'fips:') === 0) {
-                return substr($rawRegion->countyId, 5);
+            if (property_exists($rawRegion, 'countyID')) {
+                if (strpos($rawRegion->countyID, 'fips:') === 0) {
+                    return substr($rawRegion->countyID, 5);
+                }
             }
         }
         return '';
