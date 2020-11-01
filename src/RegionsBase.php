@@ -90,6 +90,7 @@ class RegionsBase
             }
             $population = $rawRegion->population;
             $points = ['cases', 'deaths', 'discharged'];
+            $dataPoints = [];
             foreach ($points as $point) {
                 $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
                 ksort($dataPoints[$point]);
