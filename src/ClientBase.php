@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 class ClientBase
 {
 
-    protected string $apiUrl = 'https://coronadatascraper.com/';
+    protected string $apiUrl = 'https://liproduction-reportsbucket-bhk8fnhv1s76.s3-us-west-1.amazonaws.com/v1/latest/';
     protected string $endpoint = 'timeseries-byLocation.json';
 
     /* @var ClientInterface */

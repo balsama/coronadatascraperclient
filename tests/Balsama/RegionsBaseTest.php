@@ -61,6 +61,12 @@ class RegionsBaseTest extends TestCase
         $this->assertEmpty($fips);
     }
 
+    public function testRealRegion()
+    {
+        $region = $this->regions->getRegion('Suffolk County/ Massachusetts/ United States');
+        $this->assertGreaterThan(20800, $region->getLatestCount(), 'Suffolk County cases seem lower than expected.');
+    }
+
     /**
      * Invokes an object's private method.
      *

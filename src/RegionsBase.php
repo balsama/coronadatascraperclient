@@ -150,7 +150,7 @@ class RegionsBase
                 continue;
             }
             if (empty($previous)) {
-                $previous = $numbers->cases;
+                $previous = 0;
             }
             $dayCases[strtotime($date)] = ($numbers->cases - $previous);
             $previous = $numbers->cases;
