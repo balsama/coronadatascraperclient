@@ -92,7 +92,7 @@ class RegionsBase
             $points = ['cases', 'deaths', 'discharged'];
             $dataPoints = [];
             foreach ($points as $point) {
-                $dataPoints[$point] = $this->isolateDates($rawRegion, (int) $point);
+                $dataPoints[$point] = $this->isolateDates($rawRegion, $point);
                 ksort($dataPoints[$point]);
             }
             $dataPoints['new_cases'] = $this->extractNewCases($rawRegion);
